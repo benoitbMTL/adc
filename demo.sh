@@ -64,7 +64,7 @@ do_curl() {
 
     if [ ! -f "$COOKIE_FILE" ]; then
         # Use curl to try to connect and create a new cookie file
-        /usr/bin/curl -s -o /dev/null "http://${HOST}/${PATH}" \
+        curl -s -o /dev/null "http://${HOST}/${PATH}" \
             -H "authority: ${HOST}" \
             -H "cache-control: max-age=0" \
             -H "content-type: application/x-www-form-urlencoded" \
