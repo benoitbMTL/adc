@@ -52,7 +52,7 @@ curl "http://${VIP_DVWA}/login.php" \
     -c cookie.txt
 
 echo -e "Connecting to ${BLUE}http://${VIP_DVWA}/vulnerabilities/exec/${RESTORE}\n"
-curl -s "http//${VIP_DVWA}/vulnerabilities/exec/" \
+curl "http//${VIP_DVWA}/vulnerabilities/exec/" \
     -H "authority: ${VIP_DVWA}" \
     -H "cache-control: max-age=0" \
     -H "content-type: application/x-www-form-urlencoded" \
