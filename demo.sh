@@ -103,5 +103,5 @@ do_curl() {
 ## Traffic Generator
 ############################################################################
 
-do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login"
-do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost"
+do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login" "cookie.txt"
+do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost" "cookie.txt"
