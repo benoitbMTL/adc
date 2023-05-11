@@ -20,6 +20,7 @@ VIP_SHOP="10.163.7.35"
 VIP_HELLO="10.163.7.36"
 VIP_FINANCE="10.163.7.37"
 USER_AGENT="FortiADC Demo Script"
+COOKIE="cookie.txt"
 
 ############################################################################
 ## Colors
@@ -69,40 +70,42 @@ print_cookie() {
 ############################################################################
 do_curl() {
     local HOST=$1
-    local URL_PATH=$2
+    local PATH=$2
     local REFERER=$3
     local DATA_RAW=$4
     local COOKIE_FILE=$5
+    local COOKIE_ACTION=$6  # "read", "write", or "none"
 
     # Debug
     echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
 
-    if [ ! -f "$COOKIE_FILE" ]; then
-        # Use curl to try to connect and create a new cookie file
-        curl -s -o /dev/null "http://${HOST}/${URL_PATH}" \
-            -H "authority: ${HOST}" \
-            -H "cache-control: max-age=0" \
-            -H "content-type: application/x-www-form-urlencoded" \
-            -H "origin: http://${HOST}" \
-            -H "referer: http://${HOST}/${REFERER}" \
-            -H "user-agent: FortiADC Demo Script" \
-            --insecure \
-            --data-raw "${DATA_RAW}" \
-            -c "$COOKIE_FILE"
-    else
-        # Use curl to try to connect and use the existing cookie file
-        curl -s -o /dev/null "http://${HOST}/${URL_PATH}" \
-            -H "authority: ${HOST}" \
-            -H "cache-control: max-age=0" \
-            -H "content-type: application/x-www-form-urlencoded" \
-            -H "origin: http://${HOST}" \
-            -H "referer: http://${HOST}/${REFERER}" \
-            -H "user-agent: FortiADC Demo Script" \
-            --insecure \
-            --data-raw "${DATA_RAW}" \
-            -b "$COOKIE_FILE"
+# Base curl command without -b or -c
+    local CURL_CMD="curl -s -o /dev/null \"http://${HOST}/${PATH}\" \
+        -H \"authority: ${HOST}\" \
+        -H \"cache-control: max-age=0\" \
+        -H \"content-type: application/x-www-form-urlencoded\" \
+        -H \"origin: http://${HOST}\" \
+        -H \"referer: http://${HOST}/${REFERER}\" \
+        -H \"user-agent: FortiADC Demo Script\" \
+        --insecure \
+        --data-raw \"${DATA_RAW}\""
+
+    # Add -b or -c to the curl command if a cookie file was provided
+    if [ -n "$COOKIE_FILE" ]; then
+        case "$COOKIE_ACTION" in
+            read)
+                CURL_CMD+=" -b \"$COOKIE_FILE\""
+                ;;
+            write)
+                CURL_CMD+=" -c \"$COOKIE_FILE\""
+                ;;
+        esac
     fi
 
+    # Run the curl command
+    eval $CURL_CMD
+
+    # Print the cookie value
     print_cookie "$COOKIE_FILE"
 
     # Check the exit status of the curl command
@@ -113,21 +116,20 @@ do_curl() {
     fi
 }
 
-
 ############################################################################
 ## Traffic Generator
 ############################################################################
 
-do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login" "cookie.txt"
-do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost" "cookie.txt"
-delete_cookie "cookie.txt"
+do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login" "${COOKIE}" "write"
+do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost" "${COOKIE}" "read"
+delete_cookie "${COOKIE}"
 
-do_curl "${VIP_DVWA}" "login.php" "" "username=gordonb&password=abc123&Login=Login" "cookie.txt"
-do_curl "${VIP_DVWA}" "vulnerabilities/sqli/?id=%27OR+1%3D1%23&Submit=Submit" "index.php" "localhost" "cookie.txt"
-delete_cookie "cookie.txt"
+do_curl "${VIP_DVWA}" "login.php" "" "username=gordonb&password=abc123&Login=Login" "${COOKIE}" "write"
+do_curl "${VIP_DVWA}" "vulnerabilities/sqli/?id=%27OR+1%3D1%23&Submit=Submit" "index.php" "localhost" "${COOKIE}" "read"
+delete_cookie "${COOKIE}"
 
-do_curl "${VIP_PETSTORE}" ""
-do_curl "${VIP_SPEEDTEST}" ""
-do_curl "${VIP_SHOP}" ""
-do_curl "${VIP_HELLO}" ""
+do_curl "${VIP_PETSTORE}"
+do_curl "${VIP_SPEEDTEST}"
+do_curl "${VIP_SHOP}"
+do_curl "${VIP_HELLO}"
 do_curl "${VIP_FINANCE}" "fwb"
