@@ -34,6 +34,21 @@ PURPLE='\033[00;35m'
 CYAN='\033[00;36m'
 LIGHTGRAY='\033[00;37m'
 
+
+############################################################################
+## DELETE COOKIE
+############################################################################
+delete_cookie() {
+    local COOKIE_FILE=$1
+
+    if [ ! -f "$COOKIE_FILE" ]; then
+        echo "Cookie file does not exist: $COOKIE_FILE"
+        return 1
+    fi
+
+    rm $COOKIE_FILE
+}
+
 ############################################################################
 ## PRINT COOKIE
 ############################################################################
@@ -61,8 +76,6 @@ do_curl() {
 
     # Debug
     echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
-
-    curl -v http://perdu.com
 
     if [ ! -f "$COOKIE_FILE" ]; then
         # Use curl to try to connect and create a new cookie file
@@ -107,3 +120,14 @@ do_curl() {
 
 do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login" "cookie.txt"
 do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost" "cookie.txt"
+delete_cookie "cookie.txt"
+
+do_curl "${VIP_DVWA}" "login.php" "" "username=gordonb&password=abc123&Login=Login" "cookie.txt"
+do_curl "${VIP_DVWA}" "vulnerabilities/sqli/?id=%27OR+1%3D1%23&Submit=Submit" "index.php" "localhost" "cookie.txt"
+delete_cookie "cookie.txt"
+
+do_curl "${VIP_PETSTORE}" ""
+do_curl "${VIP_SPEEDTEST}" ""
+do_curl "${VIP_SHOP}" ""
+do_curl "${VIP_HELLO}" ""
+do_curl "${VIP_FINANCE}" "fwb"
