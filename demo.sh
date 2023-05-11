@@ -80,7 +80,7 @@ do_curl() {
     echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
 
 # Base curl command without -b or -c
-    local CURL_CMD="curl -k -v \"http://${HOST}/${URL_PATH}\" \
+    local CURL_CMD="curl -k -s -o /dev/null \"http://${HOST}/${URL_PATH}\" \
         -H \"authority: ${HOST}\" \
         -H \"cache-control: max-age=0\" \
         -H \"content-type: application/x-www-form-urlencoded\" \
@@ -103,11 +103,7 @@ do_curl() {
     fi
 
     # Run the curl command
-    echo ""
-    echo ""
-    echo $CURL_CMD
-    echo ""
-    echo ""
+    #echo $CURL_CMD
     eval $CURL_CMD
 
     # Check the exit status of the curl command
@@ -141,6 +137,5 @@ END_COMMENT
 
 echo "${VIP_HELLO}"
 do_curl "${VIP_HELLO}"
-
 
 #do_curl "${VIP_FINANCE}" "fwb"
