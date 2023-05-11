@@ -119,6 +119,11 @@ do_curl() {
 
     # Print the cookie value
     print_cookie "$COOKIE_FILE"
+
+    random_number=$((RANDOM % 10 + 1))
+    echo "Sleeping for $random_number seconds..."
+    sleep $random_number
+
 }
 
 ############################################################################
