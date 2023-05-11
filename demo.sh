@@ -62,6 +62,8 @@ do_curl() {
     # Debug
     echo "curl http://${HOST}/${PATH} --data-raw ${DATA_RAW}"
 
+    curl -v http://perdu.com
+
     if [ ! -f "$COOKIE_FILE" ]; then
         # Use curl to try to connect and create a new cookie file
         curl -s -o /dev/null "http://${HOST}/${PATH}" \
