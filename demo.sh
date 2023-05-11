@@ -54,19 +54,19 @@ print_cookie() {
 ############################################################################
 do_curl() {
     local HOST=$1
-    local PATH=$2
+    local URL_PATH=$2
     local REFERER=$3
     local DATA_RAW=$4
     local COOKIE_FILE=$5
 
     # Debug
-    echo "curl http://${HOST}/${PATH} --data-raw ${DATA_RAW}"
+    echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
 
     curl -v http://perdu.com
 
     if [ ! -f "$COOKIE_FILE" ]; then
         # Use curl to try to connect and create a new cookie file
-        curl -s -o /dev/null "http://${HOST}/${PATH}" \
+        curl -s -o /dev/null "http://${HOST}/${URL_PATH}" \
             -H "authority: ${HOST}" \
             -H "cache-control: max-age=0" \
             -H "content-type: application/x-www-form-urlencoded" \
@@ -78,7 +78,7 @@ do_curl() {
             -c "$COOKIE_FILE"
     else
         # Use curl to try to connect and use the existing cookie file
-        curl -s -o /dev/null "http://${HOST}/${PATH}" \
+        curl -s -o /dev/null "http://${HOST}/${URL_PATH}" \
             -H "authority: ${HOST}" \
             -H "cache-control: max-age=0" \
             -H "content-type: application/x-www-form-urlencoded" \
