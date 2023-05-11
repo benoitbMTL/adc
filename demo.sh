@@ -42,7 +42,7 @@ delete_cookie() {
     local COOKIE_FILE=$1
 
     if [ ! -f "$COOKIE_FILE" ]; then
-        echo "Cookie file does not exist: $COOKIE_FILE"
+        #echo "Cookie file does not exist: $COOKIE_FILE"
         return 1
     fi
 
@@ -56,7 +56,7 @@ print_cookie() {
     local COOKIE_FILE=$1
 
     if [ ! -f "$COOKIE_FILE" ]; then
-        echo "Cookie file does not exist: $COOKIE_FILE"
+        #echo "Cookie file does not exist: $COOKIE_FILE"
         return 1
     fi
 
