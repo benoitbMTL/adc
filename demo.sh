@@ -103,12 +103,12 @@ do_curl() {
     fi
 
     # Run the curl command
-    eval $CURL_CMD
-
+    echo ""
+    echo ""
     echo $CURL_CMD
-
-    # Print the cookie value
-    print_cookie "$COOKIE_FILE"
+    echo ""
+    echo ""
+    eval $CURL_CMD
 
     # Check the exit status of the curl command
     if [ $? -eq 0 ]; then
@@ -116,6 +116,9 @@ do_curl() {
     else
         echo -e "Connection to $HOST ${RED}failed${RESTORE}"
     fi
+
+    # Print the cookie value
+    print_cookie "$COOKIE_FILE"
 }
 
 ############################################################################
