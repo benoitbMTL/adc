@@ -78,9 +78,9 @@ do_curl() {
 
     # Debug
     if [ -n "$DATA_RAW" ]; then
-        echo "curl http://${HOST}/${URL_PATH} --data-raw ${RED}${DATA_RAW}${RESTORE}"
+        echo -e "curl ${BLUE}http://${HOST}/${URL_PATH}${RESTORE} --data-raw ${RED}${DATA_RAW}${RESTORE}"
     else
-        echo "curl http://${HOST}/${URL_PATH}"
+        echo "curl ${BLUE}http://${HOST}/${URL_PATH}${RESTORE}"
     fi
 
 # Base curl command without -b or -c
