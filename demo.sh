@@ -84,7 +84,7 @@ do_curl() {
     fi
 
 # Base curl command without -b or -c
-    local CURL_CMD="curl -k -s -o /dev/null \"http://${HOST}/${URL_PATH}\" \
+    local CURL_CMD="curl -L -k -s -o /dev/null \"http://${HOST}/${URL_PATH}\" \
         -H \"authority: ${HOST}\" \
         -H \"cache-control: max-age=0\" \
         -H \"content-type: application/x-www-form-urlencoded\" \
