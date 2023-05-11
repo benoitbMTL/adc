@@ -51,7 +51,7 @@ curl "http://${VIP_DVWA}/login.php" \
     --data-raw "username=pablo&password=letmein&Login=Login" \
     -c cookie.txt
 
-grep PHSESSID cookie.txt
+grep PHPSESSID cookie.txt
 
 echo -e "Connecting to ${BLUE}http://${VIP_DVWA}/vulnerabilities/exec/${RESTORE}\n"
 curl "http//${VIP_DVWA}/vulnerabilities/exec/" \
