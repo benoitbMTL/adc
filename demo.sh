@@ -41,11 +41,11 @@ print_cookie() {
     local COOKIE_FILE=$1
 
     if [ ! -f "$COOKIE_FILE" ]; then
-        echo "Cookie file does not exist: $COOKIE_FILE"
+        /usr/bin/echo "Cookie file does not exist: $COOKIE_FILE"
         return 1
     fi
 
-    grep "PHPSESSID" "$COOKIE_FILE" | awk 'NF{print $1 " --> " $6 "=" $7}'
+    /usr/bin/grep "PHPSESSID" "$COOKIE_FILE" | /usr/bin/awk 'NF{print $1 " --> " $6 "=" $7}'
 }
 
 
@@ -60,7 +60,7 @@ do_curl() {
     local COOKIE_FILE=$5
 
     # Debug
-    echo "curl http://${HOST}/${PATH} --data-raw ${DATA_RAW}"
+    /usr/bin/echo "curl http://${HOST}/${PATH} --data-raw ${DATA_RAW}"
 
     if [ ! -f "$COOKIE_FILE" ]; then
         # Use curl to try to connect and create a new cookie file
