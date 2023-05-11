@@ -51,6 +51,12 @@ curl "http://${VIP_DVWA}/login.php" \
     --data-raw "username=pablo&password=letmein&Login=Login" \
     -c cookie.txt
 
+if [ $? -eq 0 ]; then
+    echo "Connection was successful"
+else
+    echo "Connection failed"
+fi
+
 grep PHPSESSID cookie.txt
 
 echo -e "Connecting to ${BLUE}http://${VIP_DVWA}/vulnerabilities/exec/${RESTORE}\n"
@@ -64,3 +70,9 @@ curl "http://${VIP_DVWA}/vulnerabilities/exec/" \
     --insecure \
     --data-raw "localhost" \
     -b cookie.txt 
+
+if [ $? -eq 0 ]; then
+    echo "Connection was successful"
+else
+    echo "Connection failed"
+fi
