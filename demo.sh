@@ -78,7 +78,7 @@ do_curl() {
 
     # Debug
     if [ -n "$DATA_RAW" ]; then
-        echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
+        echo "curl http://${HOST}/${URL_PATH} --data-raw ${RED}${DATA_RAW}${RESTORE}"
     else
         echo "curl http://${HOST}/${URL_PATH}"
     fi
