@@ -80,7 +80,7 @@ do_curl() {
     echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
 
 # Base curl command without -b or -c
-    local CURL_CMD="curl -s -o /dev/null \"http://${HOST}/${URL_PATH}\" \
+    local CURL_CMD="curl -v \"http://${HOST}/${URL_PATH}\" \
         -H \"authority: ${HOST}\" \
         -H \"cache-control: max-age=0\" \
         -H \"content-type: application/x-www-form-urlencoded\" \
