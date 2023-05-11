@@ -80,7 +80,7 @@ do_curl() {
     if [ -n "$DATA_RAW" ]; then
         echo -e "curl ${BLUE}http://${HOST}/${URL_PATH}${RESTORE} --data-raw ${RED}${DATA_RAW}${RESTORE}"
     else
-        echo "curl ${BLUE}http://${HOST}/${URL_PATH}${RESTORE}"
+        echo -e "curl ${BLUE}http://${HOST}/${URL_PATH}${RESTORE}"
     fi
 
 # Base curl command without -b or -c
