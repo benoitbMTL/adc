@@ -77,7 +77,11 @@ do_curl() {
     local COOKIE_ACTION=$6  # "read", "write", or "none"
 
     # Debug
-    echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
+    if [ -n "$DATA_RAW" ]; then
+        echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
+    else
+        echo "curl http://${HOST}/${URL_PATH}"
+    fi
 
 # Base curl command without -b or -c
     local CURL_CMD="curl -k -s -o /dev/null \"http://${HOST}/${URL_PATH}\" \
@@ -121,7 +125,6 @@ do_curl() {
 ## Traffic Generator
 ############################################################################
 
-: <<'END_COMMENT'
 do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login" "${COOKIE}" "write"
 do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost" "${COOKIE}" "read"
 delete_cookie "${COOKIE}"
@@ -133,9 +136,5 @@ delete_cookie "${COOKIE}"
 do_curl "${VIP_PETSTORE}"
 do_curl "${VIP_SPEEDTEST}"
 do_curl "${VIP_SHOP}"
-END_COMMENT
-
-echo "${VIP_HELLO}"
 do_curl "${VIP_HELLO}"
-
-#do_curl "${VIP_FINANCE}" "fwb"
+do_curl "${VIP_FINANCE}" "fwb"
