@@ -125,16 +125,20 @@ do_curl() {
 ## Traffic Generator
 ############################################################################
 
-do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login" "${COOKIE}" "write"
-do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost" "${COOKIE}" "read"
-delete_cookie "${COOKIE}"
+while true ; do
 
-do_curl "${VIP_DVWA}" "login.php" "" "username=gordonb&password=abc123&Login=Login" "${COOKIE}" "write"
-do_curl "${VIP_DVWA}" "vulnerabilities/sqli/?id=%27OR+1%3D1%23&Submit=Submit" "index.php" "localhost" "${COOKIE}" "read"
-delete_cookie "${COOKIE}"
+    do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login" "${COOKIE}" "write"
+    do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost" "${COOKIE}" "read"
+    delete_cookie "${COOKIE}"
 
-do_curl "${VIP_PETSTORE}"
-do_curl "${VIP_SPEEDTEST}"
-do_curl "${VIP_SHOP}"
-do_curl "${VIP_HELLO}"
-do_curl "${VIP_FINANCE}" "fwb"
+    do_curl "${VIP_DVWA}" "login.php" "" "username=gordonb&password=abc123&Login=Login" "${COOKIE}" "write"
+    do_curl "${VIP_DVWA}" "vulnerabilities/sqli/?id=%27OR+1%3D1%23&Submit=Submit" "index.php" "localhost" "${COOKIE}" "read"
+    delete_cookie "${COOKIE}"
+
+    do_curl "${VIP_PETSTORE}"
+    do_curl "${VIP_SPEEDTEST}"
+    do_curl "${VIP_SHOP}"
+    do_curl "${VIP_HELLO}"
+    do_curl "${VIP_FINANCE}" "fwb"
+
+done
