@@ -34,26 +34,61 @@ PURPLE='\033[00;35m'
 CYAN='\033[00;36m'
 LIGHTGRAY='\033[00;37m'
 
+############################################################################
+## PRINT COOKIE
+############################################################################
+print_cookie() {
+    local COOKIE_FILE=$1
+
+    if [ ! -f "$COOKIE_FILE" ]; then
+        echo "Cookie file does not exist: $COOKIE_FILE"
+        return 1
+    fi
+
+    grep "PHPSESSID" "$COOKIE_FILE" | awk 'NF{print $1 " --> " $6 "=" $7}'
+}
+
+
+############################################################################
+## EXECUTE CURL
+############################################################################
 do_curl() {
     local HOST=$1
     local PATH=$2
     local REFERER=$3
     local DATA_RAW=$4
+    local COOKIE_FILE=$5
 
     # Debug
     echo "curl http://${HOST}/${PATH} --data-raw ${DATA_RAW}"
 
-    # Use curl to try to connect
-    /usr/bin/curl -s -o /dev/null "http://${HOST}/${PATH}" \
-        -H "authority: ${HOST}" \
-        -H "cache-control: max-age=0" \
-        -H "content-type: application/x-www-form-urlencoded" \
-        -H "origin: http://${HOST}" \
-        -H "referer: http://${HOST}/${REFERER}" \
-        -H "user-agent: ${USER_AGENT}" \
-        --insecure \
-        --data-raw "${DATA_RAW}" \
-        -c cookie.txt
+    if [ ! -f "$COOKIE_FILE" ]; then
+        # Use curl to try to connect and create a new cookie file
+        curl -s -o /dev/null "http://${HOST}/${PATH}" \
+            -H "authority: ${HOST}" \
+            -H "cache-control: max-age=0" \
+            -H "content-type: application/x-www-form-urlencoded" \
+            -H "origin: http://${HOST}" \
+            -H "referer: http://${HOST}/${REFERER}" \
+            -H "user-agent: FortiADC Demo Script" \
+            --insecure \
+            --data-raw "${DATA_RAW}" \
+            -c "$COOKIE_FILE"
+    else
+        # Use curl to try to connect and use the existing cookie file
+        curl -s -o /dev/null "http://${HOST}/${PATH}" \
+            -H "authority: ${HOST}" \
+            -H "cache-control: max-age=0" \
+            -H "content-type: application/x-www-form-urlencoded" \
+            -H "origin: http://${HOST}" \
+            -H "referer: http://${HOST}/${REFERER}" \
+            -H "user-agent: FortiADC Demo Script" \
+            --insecure \
+            --data-raw "${DATA_RAW}" \
+            -b "$COOKIE_FILE"
+    fi
+
+    print_cookie "$COOKIE_FILE"
 
     # Check the exit status of the curl command
     if [ $? -eq 0 ]; then
@@ -63,11 +98,10 @@ do_curl() {
     fi
 }
 
+
 ############################################################################
 ## Traffic Generator
 ############################################################################
 
 do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login"
-grep PHPSESSID cookie.txt
 do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost"
-grep PHPSESSID cookie.txt
