@@ -10,7 +10,6 @@ if [ "$BASH_SOURCE" = "" ]; then
     exit 0
 fi
 
-
 ###############################################
 ## Set Variables
 ###############################################
@@ -20,7 +19,6 @@ VIP_SPEEDTEST="10.163.7.34"
 VIP_SHOP="10.163.7.35"
 VIP_HELLO="10.163.7.36"
 VIP_FINANCE="10.163.7.37"
-
 
 ############################################################################
 ## Colors
@@ -35,44 +33,40 @@ PURPLE='\033[00;35m'
 CYAN='\033[00;36m'
 LIGHTGRAY='\033[00;37m'
 
+do_curl() {
+    local HOST=$1
+    local PATH=$2
+    local REFERER=$3
+    local DATA_RAW=$4
+
+    # Debug
+    echo "curl http://${HOST}/${PATH} --data-raw ${DATA_RAW}"
+
+    # Use curl to try to connect
+    curl -s -o /dev/null "http://${HOST}/${PATH}" \
+        -H "authority: ${HOST}" \
+        -H "cache-control: max-age=0" \
+        -H "content-type: application/x-www-form-urlencoded" \
+        -H "origin: http://${HOST}" \
+        -H "referer: http://${HOST}/${REFERER}" \
+        -H "user-agent: FortiADC Demo Script" \
+        --insecure \
+        --data-raw "${DATA_RAW}" \
+        -c cookie.txt
+
+    # Check the exit status of the curl command
+    if [ $? -eq 0 ]; then
+        echo "Connection to $HOST was successful"
+    else
+        echo "Connection to $HOST failed"
+    fi
+}
+
 ############################################################################
 ## Traffic Generator
 ############################################################################
 
-echo -e "Connecting to ${BLUE}http://${VIP_DVWA}/login.php${RESTORE} username=${BLUE}pablo${RESTORE} password=${BLUE}letmein${RESTORE}"
-curl "http://${VIP_DVWA}/login.php" \
-    -H "authority: ${VIP_DVWA}" \
-    -H "cache-control: max-age=0" \
-    -H "content-type: application/x-www-form-urlencoded" \
-    -H "origin: http://${VIP_DVWA}" \
-    -H "referer: http://${VIP_DVWA}" \
-    -H "user-agent: FortiADC Demo Script" \
-    --insecure \
-    --data-raw "username=pablo&password=letmein&Login=Login" \
-    -c cookie.txt
-
-if [ $? -eq 0 ]; then
-    echo "Connection was successful"
-else
-    echo "Connection failed"
-fi
-
+do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login"
 grep PHPSESSID cookie.txt
-
-echo -e "Connecting to ${BLUE}http://${VIP_DVWA}/vulnerabilities/exec/${RESTORE}\n"
-curl "http://${VIP_DVWA}/vulnerabilities/exec/" \
-    -H "authority: ${VIP_DVWA}" \
-    -H "cache-control: max-age=0" \
-    -H "content-type: application/x-www-form-urlencoded" \
-    -H "origin: http://${VIP_DVWA}" \
-    -H "referer: http://${VIP_DVWA}/index.php" \
-    -H "user-agent: FortiADC Demo Script" \
-    --insecure \
-    --data-raw "localhost" \
-    -b cookie.txt 
-
-if [ $? -eq 0 ]; then
-    echo "Connection was successful"
-else
-    echo "Connection failed"
-fi
+do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost"
+grep PHPSESSID cookie.txt
