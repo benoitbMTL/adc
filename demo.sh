@@ -54,7 +54,7 @@ curl "http://${VIP_DVWA}/login.php" \
 grep PHPSESSID cookie.txt
 
 echo -e "Connecting to ${BLUE}http://${VIP_DVWA}/vulnerabilities/exec/${RESTORE}\n"
-curl "http//${VIP_DVWA}/vulnerabilities/exec/" \
+curl "http://${VIP_DVWA}/vulnerabilities/exec/" \
     -H "authority: ${VIP_DVWA}" \
     -H "cache-control: max-age=0" \
     -H "content-type: application/x-www-form-urlencoded" \
