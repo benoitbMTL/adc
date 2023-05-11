@@ -70,7 +70,7 @@ print_cookie() {
 ############################################################################
 do_curl() {
     local HOST=$1
-    local PATH=$2
+    local URL_PATH=$2
     local REFERER=$3
     local DATA_RAW=$4
     local COOKIE_FILE=$5
@@ -80,7 +80,7 @@ do_curl() {
     echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
 
 # Base curl command without -b or -c
-    local CURL_CMD="curl -s -o /dev/null \"http://${HOST}/${PATH}\" \
+    local CURL_CMD="curl -s -o /dev/null \"http://${HOST}/${URL_PATH}\" \
         -H \"authority: ${HOST}\" \
         -H \"cache-control: max-age=0\" \
         -H \"content-type: application/x-www-form-urlencoded\" \
