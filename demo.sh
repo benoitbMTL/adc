@@ -107,9 +107,9 @@ do_curl() {
 
     # Check the exit status of the curl command
     if [ $? -eq 0 ]; then
-        echo "Connection to $HOST was successful"
+        echo "Connection to $HOST was ${GREEN}successful${RESTORE}"
     else
-        echo "Connection to $HOST failed"
+        echo "Connection to $HOST ${RED}failed${RESTORE}"
     fi
 }
 
