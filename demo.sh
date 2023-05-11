@@ -105,6 +105,8 @@ do_curl() {
     # Run the curl command
     eval $CURL_CMD
 
+    echo $CURL_CMD
+
     # Print the cookie value
     print_cookie "$COOKIE_FILE"
 
@@ -120,6 +122,7 @@ do_curl() {
 ## Traffic Generator
 ############################################################################
 
+: <<'END_COMMENT'
 do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login" "${COOKIE}" "write"
 do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost" "${COOKIE}" "read"
 delete_cookie "${COOKIE}"
@@ -131,5 +134,10 @@ delete_cookie "${COOKIE}"
 do_curl "${VIP_PETSTORE}"
 do_curl "${VIP_SPEEDTEST}"
 do_curl "${VIP_SHOP}"
+END_COMMENT
+
+echo "${VIP_HELLO}"
 do_curl "${VIP_HELLO}"
-do_curl "${VIP_FINANCE}" "fwb"
+
+
+#do_curl "${VIP_FINANCE}" "fwb"
