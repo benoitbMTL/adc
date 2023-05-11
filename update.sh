@@ -1,5 +1,5 @@
 #!/bin/bash
 git stash
 git pull
-chmod 755 demo.sh
+chmod 755 *.sh
 . demo.sh
