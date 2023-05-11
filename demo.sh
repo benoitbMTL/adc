@@ -19,6 +19,7 @@ VIP_SPEEDTEST="10.163.7.34"
 VIP_SHOP="10.163.7.35"
 VIP_HELLO="10.163.7.36"
 VIP_FINANCE="10.163.7.37"
+USER_AGENT="FortiADC Demo Script"
 
 ############################################################################
 ## Colors
@@ -43,13 +44,13 @@ do_curl() {
     echo "curl http://${HOST}/${PATH} --data-raw ${DATA_RAW}"
 
     # Use curl to try to connect
-    curl -s -o /dev/null "http://${HOST}/${PATH}" \
+    /usr/bin/curl -s -o /dev/null "http://${HOST}/${PATH}" \
         -H "authority: ${HOST}" \
         -H "cache-control: max-age=0" \
         -H "content-type: application/x-www-form-urlencoded" \
         -H "origin: http://${HOST}" \
         -H "referer: http://${HOST}/${REFERER}" \
-        -H "user-agent: FortiADC Demo Script" \
+        -H "user-agent: ${USER_AGENT}" \
         --insecure \
         --data-raw "${DATA_RAW}" \
         -c cookie.txt
