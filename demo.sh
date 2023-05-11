@@ -80,23 +80,23 @@ do_curl() {
     echo "curl http://${HOST}/${URL_PATH} --data-raw ${DATA_RAW}"
 
 # Base curl command without -b or -c
-    local CURL_CMD="curl -v \"http://${HOST}/${URL_PATH}\" \
+    local CURL_CMD="curl -k -v \"http://${HOST}/${URL_PATH}\" \
         -H \"authority: ${HOST}\" \
         -H \"cache-control: max-age=0\" \
         -H \"content-type: application/x-www-form-urlencoded\" \
         -H \"origin: http://${HOST}\" \
         -H \"referer: http://${HOST}/${REFERER}\" \
-        -H \"user-agent: FortiADC Demo Script\" \
-        --insecure \
-        --data-raw \"${DATA_RAW}\""
+        -H \"user-agent: FortiADC Demo Script\""
 
     # Add -b or -c to the curl command if a cookie file was provided
     if [ -n "$COOKIE_FILE" ]; then
         case "$COOKIE_ACTION" in
             read)
+                CURL_CMD+=" --data-raw \"${DATA_RAW}\""
                 CURL_CMD+=" -b \"$COOKIE_FILE\""
                 ;;
             write)
+                CURL_CMD+=" --data-raw \"${DATA_RAW}\""
                 CURL_CMD+=" -c \"$COOKIE_FILE\""
                 ;;
         esac
