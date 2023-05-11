@@ -7,5 +7,6 @@ do_curl() {
     then
         curl -k https://"$HOST"
     fi
+}
 
 do_curl "perdu.com"
