@@ -40,25 +40,25 @@ LIGHTGRAY='\033[00;37m'
 ############################################################################
 
 echo -e "Connecting to ${BLUE}http://${VIP_DVWA}/login.php${RESTORE} username=${BLUE}pablo${RESTORE} password=${BLUE}letmein${RESTORE}"
-curl 'http://${VIP_DVWA}/login.php' \
-    -H 'authority: ${VIP_DVWA}' \
-    -H 'cache-control: max-age=0' \
-    -H 'content-type: application/x-www-form-urlencoded' \
-    -H 'origin: http://${VIP_DVWA}' \
-    -H 'referer: http://${VIP_DVWA}' \
-    -H 'user-agent: FortiADC Demo Script' \
+curl "http://${VIP_DVWA}/login.php" \
+    -H "authority: ${VIP_DVWA}" \
+    -H "cache-control: max-age=0" \
+    -H "content-type: application/x-www-form-urlencoded" \
+    -H "origin: http://${VIP_DVWA}" \
+    -H "referer: http://${VIP_DVWA}" \
+    -H "user-agent: FortiADC Demo Script" \
     --insecure \
-    --data-raw 'username=pablo&password=letmein&Login=Login' \
+    --data-raw "username=pablo&password=letmein&Login=Login" \
     -c cookie.txt
 
 echo -e "Connecting to ${BLUE}http://${VIP_DVWA}/vulnerabilities/exec/${RESTORE}\n"
-curl -s 'https//${VIP_DVWA}/vulnerabilities/exec/' \
-    -H 'authority: ${VIP_DVWA}' \
-    -H 'cache-control: max-age=0' \
-    -H 'content-type: application/x-www-form-urlencoded' \
-    -H 'origin: http://${VIP_DVWA}' \
-    -H 'referer: http://${VIP_DVWA}/index.php' \
-    -H 'user-agent: FortiADC Demo Script' \
+curl -s "http//${VIP_DVWA}/vulnerabilities/exec/" \
+    -H "authority: ${VIP_DVWA}" \
+    -H "cache-control: max-age=0" \
+    -H "content-type: application/x-www-form-urlencoded" \
+    -H "origin: http://${VIP_DVWA}" \
+    -H "referer: http://${VIP_DVWA}/index.php" \
+    -H "user-agent: FortiADC Demo Script" \
     --insecure \
-    --data-raw 'localhost' \
+    --data-raw "localhost" \
     -b cookie.txt 
