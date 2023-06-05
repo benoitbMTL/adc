@@ -5,7 +5,7 @@
 
 # List all docker images
 echo "Available Docker Images:"
-sudo docker images
+sudo docker ps -a
 
 # Get the IDs of all stopped containers
 echo "IDs of all stopped containers:"
