@@ -1,5 +1,6 @@
-# bbuonassera May 11th, 2023
+# bbuonassera June 5th, 2023
 # ADC demo
+# Random Traffic Generator
 #!/bin/bash
 
 ###############################################
