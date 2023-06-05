@@ -130,7 +130,24 @@ do_curl() {
 ## Traffic Generator
 ############################################################################
 
+    # Store start time
+    start_time=$(date +%s)
+
+    # Define duration (in seconds) for 1 hour
+    duration=$((60 * 60)) 
+
 while true ; do
+
+    # Get current time
+    current_time=$(date +%s)
+    
+    # Calculate elapsed time
+    elapsed_time=$((current_time - start_time))
+
+    # Break loop if duration has elapsed
+    if (( elapsed_time >= duration )); then
+        break
+    fi
 
     do_curl "${VIP_DVWA}" "login.php" "" "username=pablo&password=letmein&Login=Login" "${COOKIE}" "write"
     do_curl "${VIP_DVWA}" "vulnerabilities/exec/" "index.php" "localhost" "${COOKIE}" "read"
