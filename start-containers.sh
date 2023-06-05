@@ -10,7 +10,7 @@ sudo docker images
 # Get the IDs of all stopped containers
 echo "IDs of all stopped containers:"
 stopped_containers=$(sudo docker ps -a -f status=exited -q)
-sudo docker ps -a -f status=exited
+sudo docker ps -a -f status=exited -q
 
 # If there are any stopped containers, start them
 if [ -n "$stopped_containers" ]; then
