@@ -154,6 +154,6 @@ while true ; do
     do_curl "${VIP_DVWA}" "vulnerabilities/sqli/?id=%27OR+1%3D1%23&Submit=Submit" "index.php" "localhost" "${COOKIE}" "read"
     delete_cookie "${COOKIE}"
 
-    do_curl "${MYAPP}"
+    do_curl "${VIP_MYAPP}"
 
 done
